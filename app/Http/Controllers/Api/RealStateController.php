@@ -29,4 +29,36 @@ class RealStateController extends Controller
 
         return response()->json($realState, 200);
     }
+
+    public function store(Request $request)
+    {
+        try {
+            $this->realState->create($request->toArray());
+
+            return response()->json([
+                'date' => [
+                    'msg' => 'Imóvel cadastrado com sucesso!'
+                ]
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 401);
+        }
+    }
+
+    public function update(int $id, Request $request)
+    {
+        try {
+            $realState = $this->realState->findOrFail($id);
+
+            $realState->update($request->toArray());
+
+            return response()->json([
+                'date' => [
+                    'msg' => 'Imóvel atualizado com sucesso!'
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 401);
+        }
+    }
 }
